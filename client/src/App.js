@@ -9,9 +9,7 @@ function App() {
   const [searchWord, setSearchWord] = useState([]);
   const [favouriteWord, setFavouriteWord] = useState([]);
   const [formData, setFormData] = useState({
-    word: ""
   })
-  const [definition, setDefinition] = useState("")
 
   useEffect(() => {
     getFavourites().then((allFaves) => {
@@ -25,17 +23,11 @@ function App() {
       .then(data => setWords(data))
   }
 
-  const getFavouritesDef = (fav) => {
-    fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + fav)
-    .then(res => res.json())
-    .then(data => setFavouriteWord(data))
-  }
-
   const handleChange = (event) => {
     setSearchWord(event.target.value)
-    const newFormData = Object.assign({}, formData);
-    newFormData[event.target.name] = event.target.value;
-    setFormData(newFormData);
+    // const newFormData = Object.assign({}, formData);
+    // newFormData[event.target.name] = event.target.value;
+    // setFormData(newFormData);
   }
 
   const addWord = (word) => {
@@ -46,46 +38,44 @@ function App() {
 
 
   const onClick = (event) => {
-    event.preventDefault();
-    postFavourite(formData)
+    event.preventDefault()
+    const helloWord = words.map((word) => {
+      const newFormData = Object.assign({}, word);
+      // newFormData[event.target.value] = event.target.name
+      setFormData(newFormData);
+      console.log(newFormData);
+      event.preventDefault();
+      postFavourite(newFormData)
       .then((data) => {
         addWord(data);
       })
-  }
-
-  const onFaveClick = () => {
-    setFavouriteWord()
+      setFormData({})
+    })
   }
 
 
 
   const helloWord = words.map((hello, index) => {
-    return <div key={index}><h2>{index + 1}. &nbsp; {hello.word}</h2>
-      <i><p>{hello.meanings[0].definitions[0].definition}</p></i>
+    return <div key={index}><h2 name="word">{index + 1}. &nbsp; {hello.word}</h2>
+      <i><p name="def">{hello.meanings[0].definitions[0].definition}</p></i>
       <button onClick={onClick}>Add to Favourites!</button>
     </div>
   })
 
-  // const favourites = favouriteWord.map((word, index) => {
-  //   return <h1>{word.meanings[0].definitions[0].definition}</h1>
-  // })
-
-  const handleFavClick = (event) => {
-    console.log(event.target.value);
-  }
-
   const favourites = favouriteWord.map((word, index) => {
-    getFavouritesDef(word.word)
+    return <div key={index}> 
+    <h2>{word.word}</h2>
+    <i><p>{word.meanings[0].definitions[0].definition}</p></i>
+    </div>
   })
 
 
   return (
     <div className="App">
       <h1>Dictionary Word Definitions</h1>
-      <input type="text" onChange={handleChange} name="word" />
+      <input type="text" onChange={handleChange} />
       <button name="search" onClick={getWords}>Search</button>
       {helloWord}
-      {/* <DisplayWord words={words}/> */}
       <h1>Favourite Words:</h1>
       {favourites}
     </div>
@@ -93,5 +83,3 @@ function App() {
 }
 
 export default App;
-
-// separate component maybe, pass favourite as a prop and pass that way
