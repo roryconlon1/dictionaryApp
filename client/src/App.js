@@ -25,11 +25,11 @@ function App() {
       .then(data => setWords(data))
   }
 
-  // const getFavouritesDef = () => {
-  //   fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + favouriteWord)
-  //   .then(res => res.json())
-  //   .then(data => setFavouriteWord(data))
-  // }
+  const getFavouritesDef = (fav) => {
+    fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + fav)
+    .then(res => res.json())
+    .then(data => setFavouriteWord(data))
+  }
 
   const handleChange = (event) => {
     setSearchWord(event.target.value)
@@ -75,10 +75,7 @@ function App() {
   }
 
   const favourites = favouriteWord.map((word, index) => {
-    return <div>
-      <h2>{word.word}</h2>
-      <button onClick={handleFavClick}>Show Definition</button>
-    </div>
+    getFavouritesDef(word.word)
   })
 
 
@@ -96,3 +93,5 @@ function App() {
 }
 
 export default App;
+
+// separate component maybe, pass favourite as a prop and pass that way
