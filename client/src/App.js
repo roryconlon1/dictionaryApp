@@ -2,6 +2,11 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import DisplayedWord from './components/DisplayedWord';
 import { getFavourites, postFavourite } from "./DbService"
+import styled from 'styled-components';
+
+const Header = styled.h1`
+padding-bottom: 20px;
+font-size: 3em;`
 
 function App() {
 
@@ -41,13 +46,6 @@ function App() {
     setFavouriteWord(temp);
   }
 
-  const deleteFavourite = (id) => {
-    const temp = favouriteWord.map(s =>s);
-    const indexToDel = temp.map(s => s._id).indexOf(id);
-    temp.splice(indexToDel, 1);
-    setFavouriteWord(temp);
-  }
-
   const onClick = (event) => {
     event.preventDefault()
     words.map((word) => {
@@ -65,10 +63,10 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Dictionary Word Definitions</h1>
+      <Header>Dictionary Word Definitions</Header>
       <input type="text" onChange={handleChange} />
       <button name="search" onClick={getWords}>Search</button>
-      <DisplayedWord words={words} onClick={onClick} favouriteWord={favouriteWord} deleteFavourite={deleteFavourite}/>
+      <DisplayedWord words={words} onClick={onClick} favouriteWord={favouriteWord} />
     </div>
   );
 }

@@ -1,21 +1,21 @@
 import React from "react";
+import styled from 'styled-components';
+
+const FavouriteList = styled.h2`
+padding-top: 50px;`
 
 const Favourites = ({ favouriteWord }) => {
 
     const favourites = favouriteWord.map((word, index) => {
         return <div key={index}>
-            <h2>{index + 1}. &nbsp;{word.word}</h2>
+            <h3>{index + 1}. &nbsp;{word.word}</h3>
             <i><p>Definition: &nbsp; {word.meanings[0].definitions[0].definition}</p></i>
         </div>
     })
 
-    const handleDelete = () => {
-        
-    }
-
     return (
         <div>
-            <h1>Favourite Words:</h1>
+            <FavouriteList>Favourite Words:</FavouriteList>
             {favourites}
         </div>
     )
