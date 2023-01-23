@@ -19,15 +19,20 @@ function App() {
 
   const getWords = () => {
     fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + searchWord)
-      .then(res => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Something went wrong');
+      })
       .then(data => setWords(data))
+      .catch((error) => {
+        console.log(error)
+    })
   }
 
   const handleChange = (event) => {
     setSearchWord(event.target.value)
-    // const newFormData = Object.assign({}, formData);
-    // newFormData[event.target.name] = event.target.value;
-    // setFormData(newFormData);
   }
 
   const addWord = (word) => {
@@ -39,9 +44,8 @@ function App() {
 
   const onClick = (event) => {
     event.preventDefault()
-    const helloWord = words.map((word) => {
+    words.map((word) => {
       const newFormData = Object.assign({}, word);
-      // newFormData[event.target.value] = event.target.name
       setFormData(newFormData);
       console.log(newFormData);
       event.preventDefault();
@@ -53,29 +57,35 @@ function App() {
     })
   }
 
-
+const handleSearch = () => {
+  getWords();
+}
 
   const helloWord = words.map((hello, index) => {
-    return <div key={index}><h2 name="word">{index + 1}. &nbsp; {hello.word}</h2>
-      <i><p name="def">{hello.meanings[0].definitions[0].definition}</p></i>
-      <button onClick={onClick}>Add to Favourites!</button>
-    </div>
+    return hello.word ? 
+    <div key={index}><h2 name="word">{index + 1}. &nbsp; {hello.word}</h2>
+      <i><p name="def">Definition: &nbsp; {hello.meanings[0].definitions[0].definition}</p></i>
+      {/* <button onClick={onClick}>Add to Favourites!</button> */}
+    </div> : <h1>Naw</h1>
   })
 
   const favourites = favouriteWord.map((word, index) => {
     return <div key={index}> 
-    <h2>{word.word}</h2>
-    <i><p>{word.meanings[0].definitions[0].definition}</p></i>
+    <h2>{index + 1}. &nbsp;{word.word}</h2>
+    <i><p>Definition: &nbsp; {word.meanings[0].definitions[0].definition}</p></i>
     </div>
   })
 
+const favourite = words.length > 0?  <button onClick={onClick}>Add to Favourites!</button> : null
 
   return (
     <div className="App">
       <h1>Dictionary Word Definitions</h1>
       <input type="text" onChange={handleChange} />
-      <button name="search" onClick={getWords}>Search</button>
+      <button name="search" onClick={handleSearch}>Search</button>
       {helloWord}
+      {favourite}
+      {/* <button onClick={onClick}>Add to Favourites!</button> */}
       <h1>Favourite Words:</h1>
       {favourites}
     </div>
