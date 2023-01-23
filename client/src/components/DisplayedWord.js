@@ -1,20 +1,24 @@
 import React from "react";
 import Favourites from "./Favourites";
 
-const DisplayedWord = ({words}) => {
+const DisplayedWord = ({ words, onClick, favouriteWord, deleteFavourite }) => {
 
-    const helloWord = words.map((hello, index) => {
-        return <div key={index}><h2>{index + 1}. &nbsp; {hello.word}</h2>
-        <i><p>{hello.meanings[0].definitions[0].definition}</p></i>
-        <button>Add to Favourites!</button>
-        </div>
-      })
+    const helloWord = words.map((word, index) => {
+        return (
+            <div key={index}><h2>{index + 1}. &nbsp; {word.word}</h2>
+                <i><p>Definition: &nbsp; {word.meanings[0].definitions[0].definition}</p></i>
+            </div>
+        )
+    })
 
-    return(
+    const favouriteButton = words.length > 0 ? <button onClick={onClick}>Add to Favourites!</button> : null
+
+    return (
         <div>
             {helloWord}
+            {favouriteButton}
             <div>
-                <Favourites/>
+                <Favourites favouriteWord={favouriteWord} deleteFavourite={deleteFavourite}/>
             </div>
         </div>
     )

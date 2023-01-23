@@ -13,3 +13,9 @@ export const postFavourite = (payload) => {
     })
     .then(res => res.json())
 }
+
+export const deleteFavourite = (id) => {
+    return fetch(url + id, {
+        method: 'DELETE'
+    })
+}
